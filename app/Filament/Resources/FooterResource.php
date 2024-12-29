@@ -33,6 +33,8 @@ class FooterResource extends Resource
                 Forms\Components\Repeater::make('informacion')
                     ->schema([
                         Forms\Components\TextInput::make('nombre')->required(),
+                        Forms\Components\TextInput::make('url')
+                            ->url(),
                         Forms\Components\ToggleButtons::make('activo')
                             ->boolean()
                             ->grouped()
@@ -41,7 +43,7 @@ class FooterResource extends Resource
                     ->deletable(false)
                     ->defaultItems(3)
                     ->columnSpanFull()
-                    ->columns(2),
+                    ->columns(3),
                 Forms\Components\FileUpload::make('imagen')
                     ->disk('public')
                     ->directory('footer')

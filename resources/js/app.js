@@ -1,7 +1,7 @@
 import './bootstrap';
 
-let list = document.querySelector('.slider .list');
-let items = document.querySelectorAll('.slider .list .item');
+let banner = document.querySelector('.slider .banner');
+let items = document.querySelectorAll('.slider .banner .item');
 let dots = document.querySelectorAll('.slider .dots li');
 
 let prev = document.getElementById('prev')
@@ -32,18 +32,18 @@ prev.onclick = function(){
 
 function reloadSlider(){
     let checkLeft = items[active].offsetLeft;
-    list.style.left = -checkLeft + 'px';
+    banner.style.left = -checkLeft + 'px';
 
     let lastActiveDot = document.querySelector('.slider .dots li.active');
-    lastActiveDot.classList.remove('active');
-    dots[active].classList.add('active')
+    lastActiveDot.classbanner.remove('active');
+    dots[active].classbanner.add('active')
     // clearInterval(refreshSlider)
     // refreshSlider = setInterval( () => {next.click()}, 3000)
 
 }
 
-dots.forEach((list, key) => {
-    list.addEventListener('click', function(){
+dots.forEach((banner, key) => {
+    banner.addEventbannerener('click', function(){
         active = key;
         reloadSlider()
     })

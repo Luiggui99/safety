@@ -10,13 +10,14 @@
     <!-- Fonts -->
 
     <!-- Styles -->
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
 
 <body>
+    {{-- inicion navbar --}}
     <header class="header">
         <a href="#" class="logo">
             <img src="{{ asset('images/logo.png') }}" width="120" alt="logo_safety">
@@ -34,7 +35,7 @@
             @endforeach
             <div class="list-icons-red-social">
                 @foreach ($redesSociales as $redSocial)
-                    <div class="icons-red-social">
+                    <div>
                         <a href="{{ $redSocial->url }}" target="_blank">
                             <i class="{{ $redSocial->icono }}"></i>
                         </a>
@@ -43,13 +44,15 @@
             </div>
         </nav>
     </header>
+    {{-- fin navbar --}}
 
+    {{-- incio banner --}}
     <div id="inicio" class="slider">
-        <div class="list">
+        <div class="banner">
             @foreach ($banners as $banner)
                 <div class="item">
                     <img src="{{ asset('storage/' . $banner->imagen_url) }}" alt="{{ $banner->imagen_alt }}"/>
-                    <div class="text-overlay">
+                    <div class="banner-text">
                         @if (!is_null($banner->texto_principal))
                             <div>{{ $banner->texto_principal }}</div>
                         @endif
@@ -57,7 +60,7 @@
                             <div>{{ $banner->texto_secundario }}</div>
                         @endif
                         @if (!is_null($banner->boton_texto))
-                            <a class="boton bg-secondary" href="{{ $banner->boton_url }}" target="_blank"><i
+                            <a class="btn bg-secondary" href="{{ $banner->boton_url }}" target="_blank"><i
                                     class="{{ $banner->boton_icono }}"></i> {{ $banner->boton_texto }}</a>
                         @endif
                     </div>
@@ -84,13 +87,18 @@
             @endforeach
         </ul>
     </div>
+    {{-- fin banner --}}
 
+    {{-- se lista todas las secciones y se define un unico diseño en cada seccion --}}
     @foreach ($sections as $index => $section)
+        {{-- se defini si la seccion esta enlazada al menu: si esta enlazado se define el id caso contrario no se declara --}}
         @if (isset($section->section_id))
-            <section id="{{ substr($section->menu->url_enlace, 1) }}" class="section-{{ $section->nombre }}" style="background: {{ $section->background }}">
-            @else
-                <section class="section-{{ $section->nombre }}" style="background: {{ $section->background }}">
+            <section id="{{ substr($section->menu->url_enlace, 1) }}" class="section section-{{ $section->nombre }}" style="background: {{ $section->background }}">
+        @else
+            <section class="section section-{{ $section->nombre }}" style="background: {{ $section->background }}">
         @endif
+
+        {{-- se define si la seccion principal cuenta con una imagen: se uso para la seccion de valores --}}
         @if (!is_null($section->section_titulo) && is_null($section->imagen))
             <div class="section-title">{{ $section->section_titulo }}</div>
         @elseif (!is_null($section->section_titulo) && !is_null($section->imagen))
@@ -102,10 +110,11 @@
             </div>
         @endif
 
+        {{-- se define los sub items de cada seccion: condicionando el estilo de acuerdo a la seccion principal mediante condicionales --}}
         <div class="section-items-{{ $section->nombre }}">
             @foreach ($section->section_items as $index_2 => $item)
                 @if ($index == 0)
-                    <div class="section section-item-0">
+                    <div class="body-{{ $section->nombre }}">
                         <div>
                             @if (!is_null($item->titulo))
                                 <div class="section-title">{{ $item->titulo }}</div>
@@ -115,7 +124,7 @@
                             @endif
                             @if (!is_null($item->boton_nombre))
                                 <div class="mt-8">
-                                    <a class="boton" href="{{ $item->boton_url }}" target="_blank"
+                                    <a class="btn" href="{{ $item->boton_url }}" target="_blank"
                                         style="background-color: {{ $item->boton_color }}">{{ $item->boton_nombre }}
                                         {!! $item->boton_icon !!}</a>
                                 </div>
@@ -127,25 +136,25 @@
                     </div>
                 @endif
                 @if ($index == 1)
-                    <div class="section">
+                    <blockquote>
                         @if (!is_null($item->contenido))
-                            {!! $item->contenido !!}
+                            <div class="body-{{ $section->nombre }}"> {!! $item->contenido !!} </div>
                         @endif
-                    </div>
+                    </blockquote>
                 @endif
                 @if ($index == 2)
                     <div class="row">
                         <div class="col-5">
                             @if (!is_null($item->imagen))
-                                <img class="img-c3" src="{{ asset('storage/' . $item->imagen) }}" alt="">
+                                <img class="img-{{ $section->nombre }}" src="{{ asset('storage/' . $item->imagen) }}" alt="">
                             @endif
                         </div>
-                        <div class="col-7 content-c3">
+                        <div class="col-7 content-{{ $section->nombre }}">
                             @if (!is_null($item->contenido))
                                 @if (!is_null($item->titulo))
                                     <div class="section-title">{{ $item->titulo }}</div>
                                 @endif
-                                <div class="text-contenido-c3">
+                                <div class="text-contenido-{{ $section->nombre }}">
                                     {!! $item->contenido !!}
                                 </div>
                             @endif
@@ -209,10 +218,10 @@
                     </div>
                 @endif
                 @if ($index == 7)
-                    <div class="row items-center">
+                    <div class="flex items-center">
                         <div class="col-4">
                             <div class="section-title">{{ $item->titulo }}</div>
-                            <div class="mt-3">{{ $item->descripcion }}</div>
+                            <div class="mt-3 descripcion-{{$section->nombre}}">{{ $item->descripcion }}</div>
                         </div>
                         <form class="col-8" id="form_contact">
                             @csrf
@@ -239,12 +248,12 @@
     @endforeach
 
 
-    <footer class="px-12 py-8" style="background-color: {{ $footer->background }}">
+    <footer class="px-12 pb-10 pt-20 text-white font-light" style="background-color: {{ $footer->background }}">
         <div class="flex gap-x-12 justify-around">
             <div>
                 <img src="{{ asset('storage/' . $footer->imagen) }}" alt="footer_logo">
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-4">
                 @foreach ($footer->informacion as $info)
                     <div> {{ $info['nombre'] }} </div>
                 @endforeach
@@ -253,7 +262,7 @@
                 <div>Siguenos en nuestras redes: </div>
                 <div class="list-icons-red-social">
                     @foreach ($redesSociales as $redSocial)
-                        <div class="icons-red-social">
+                        <div>
                             <a href="{{ $redSocial->url }}" target="_blank">
                                 <i class="{{ $redSocial->icono }}"></i>
                             </a>
@@ -262,12 +271,12 @@
                 </div>
             </div>
         </div>
-        <div class="text-center footer-copy">
-            {{ $footer->copyright }}
+        <div class="w-full pt-20 flex justify-center">
+            <div class="footer-copy text-center pt-8" style="width: 70%;"> {{ $footer->copyright }} </div>
         </div>
     </footer>
 </body>
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

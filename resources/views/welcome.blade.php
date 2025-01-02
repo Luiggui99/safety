@@ -10,8 +10,8 @@
     <!-- Fonts -->
 
     <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
@@ -276,8 +276,8 @@
         </div>
     </footer>
 </body>
-{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
     $(document).ready(function() {
         $('#form_contact').submit(function(e) {

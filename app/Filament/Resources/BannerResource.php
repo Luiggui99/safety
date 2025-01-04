@@ -46,7 +46,7 @@ class BannerResource extends Resource
                 Forms\Components\FileUpload::make('imagen_url')
                     ->disk('public')
                     ->directory('banner')
-                    ->visibility('private')
+                    // ->visibility('private')
                     ->openable()
                     ->image()
                     ->required(),
